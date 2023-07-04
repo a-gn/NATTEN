@@ -84,7 +84,7 @@ def get_extension():
     assert not is_rocm_pytorch, "NATTEN does not support ROCM."
 
     extension = CppExtension
-    extra_compile_args = {"cxx": ["-O3"]}
+    extra_compile_args = {"cxx": ["-O3", "/permissive-"]}
     define_macros = []
     if TORCH_113:
         # Torch 1.13 and above have a new dispatcher template
@@ -98,7 +98,7 @@ def get_extension():
         extension = CUDAExtension
         sources += source_cuda
         define_macros += [("WITH_CUDA", 1)]
-        extra_compile_args["nvcc"] = ["-O3"]
+        extra_compile_args["nvcc"] = ["-O3", "-Xcompiler", "/permissive-"]
 
     include_dirs = [extensions_dir]
 
